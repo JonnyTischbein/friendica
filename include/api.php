@@ -3623,6 +3623,60 @@ function api_direct_messages_destroy($type)
 api_register_func('api/direct_messages/destroy', 'api_direct_messages_destroy', true, API_METHOD_DELETE);
 
 /**
+ * Drop Contact
+ *
+ * @param string $type Return type (atom, rss, xml, json)
+ *
+ * @return int
+ * @see https://developer.twitter.com/en/docs/accounts-and-users/follow-search-get-users/api-reference/post-friendships-destroy.html
+ */
+function api_friendships_destroy($type)
+{
+        $a = get_app();
+
+        if (api_user() === false) {
+                throw new ForbiddenException();
+        }
+
+        $contact_id = (x($_REQUEST, 'user_id') ? $REQUEST_['user_id'] : null);
+
+        if ($contact_id == null) {
+                throw new BadRequestException("no user_is specified");
+        }
+
+        // Check if contact
+        $r = q("SELECT `contact`.*, `user`.* FROM `contact` INNER JOIN `user` ON `contact`.`uid` = `user`.`uid`
+                WHERE `user`.`uid` = %d AND `contact`.`self` LIMIT 1",
+                intval($a->user['uid'])
+        );
+
+        if (!DBA::isResult($r)) {
+                return;
+        }
+
+        $orig_record = DBA::selectFirst('contact', [], ['id' => $contact_id, 'uid' => [0, local_user()], 'self' => false]);
+
+        if ($orig_record['id'] == 0)
+        {
+                return;
+        }
+
+        Contact::terminateFriendship($r[0], $orig_record);
+        Contact::remove($orig_record['id']);
+
+        $data = ['result'=>$orig_record];
+
+        switch ($type) {
+                case "atom":
+                case "rss":
+                        $data = api_rss_extra($a, $data, $sender);
+        }
+        return api_format_data("friendships-destroy", $type, $data);
+}
+api_register_func('api/friendships/destroy', 'api_friendships_destroy', API_METHOD_POST);
+
+
+/**
  *
  * @param string $type Return type (atom, rss, xml, json)
  * @param string $box
