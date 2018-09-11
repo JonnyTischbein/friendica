@@ -3638,7 +3638,7 @@ function api_friendships_destroy($type)
                 throw new ForbiddenException();
         }
 
-        $contact_id = (x($_REQUEST, 'user_id') ? $REQUEST_['user_id'] : null);
+        $contact_id = (x($_REQUEST, 'user_id') ? $_REQUEST['user_id'] : null);
 
         if ($contact_id == null) {
                 throw new BadRequestException("no user_is specified");
