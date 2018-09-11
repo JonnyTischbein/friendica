@@ -3673,7 +3673,7 @@ function api_friendships_destroy($type)
         }
         return api_format_data("friendships-destroy", $type, $data);
 }
-api_register_func('api/friendships/destroy', 'api_friendships_destroy', API_METHOD_POST);
+api_register_func('api/friendships/destroy', 'api_friendships_destroy', true, API_METHOD_POST);
 
 
 /**
