@@ -3644,28 +3644,32 @@ function api_friendships_destroy($type)
                 throw new BadRequestException("no user_is specified");
         }
 
-        // Check if contact
+        // Check if contact is in user contact list
         $r = q("SELECT `contact`.*, `user`.* FROM `contact` INNER JOIN `user` ON `contact`.`uid` = `user`.`uid`
                 WHERE `user`.`uid` = %d AND `contact`.`self` LIMIT 1",
                 intval($a->user['uid'])
         );
 
-        if (!DBA::isResult($r)) {
+	// old DBM::is_result
+        if (!DBM::is_result($r)) {
                 return;
         }
 
-        $orig_record = DBA::selectFirst('contact', [], ['id' => $contact_id, 'uid' => [0, local_user()], 'self' => false]);
+        // Get contact 
+        $orig_record = q("SELECT * FROM `contact` WHERE `id` = %d AND `uid` = %d AND `self` = 0",
+                intval($_REQUEST['user_id']),
+                intval($a->user['uid'])
+        );
 
-        if ($orig_record['id'] == 0)
-        {
+	// old DBM::is_result
+        if (!DBA::isResult($orig_records) || $orig_record['id'] == 0) {
                 return;
         }
 
         Contact::terminateFriendship($r[0], $orig_record);
         Contact::remove($orig_record['id']);
 
-        $data = ['result'=>$orig_record];
-
+        $data = ['result'=>'$orig_record'];
         switch ($type) {
                 case "atom":
                 case "rss":
