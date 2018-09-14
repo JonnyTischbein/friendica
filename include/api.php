@@ -3629,6 +3629,62 @@ function api_direct_messages_destroy($type)
 /// @TODO move to top of file or somewhere better
 api_register_func('api/direct_messages/destroy', 'api_direct_messages_destroy', true, API_METHOD_DELETE);
 
+/**
+ * Create Contact
+ *
+ * @brief create contact 
+ *
+ * @param string $type Known types are 'atom', 'rss', 'xml' and 'json'
+ * @return string|array
+ * @see https://developer.twitter.com/en/docs/accounts-and-users/follow-search-get-users/api-reference/post-friendships-create.html
+ */
+functio api_friendships_create($type) {
+
+	$a = api_user();
+
+	if ($a === false) {
+		throw new ForbiddenException();
+	}
+
+	$uid = local_user();
+
+	$contact_id = defaults($_REQUEST, 'user_id');
+
+	if ($contact_id == null) {
+		logger("No user_id specified", LOGGER_DEBUG);
+		throw new BadRequestException("no user_id specified");
+	}
+
+	// Get Contact by given id
+	$contact = DBA::selectFirst('contact', ['url'], ['id' => $contact_id, 'uid' => 0, 'self' => false]);
+
+	if(!DBA::isResult($contact)) {
+		logger("No contact found for ID" . $contact_id, LOGGER_DEBUG);
+		throw new NoFoundException("no contact found to given ID");
+	}
+
+	$url = $contact["url"];
+
+	if (!Contact::createFromProbe($uid, $url)){
+		logger("Failed to Create Contact");
+		throw new NoFoundException("Failed to Create Contact");		
+	}
+
+	$answer = ['result' => 'ok', 'user_id' => $contact_id, 'contact' => 'contact created'];
+	return api_format_data("friendships-create", $type, ['result' => $answer]);
+
+}
+api_register_func('api/friendships/create', 'api_friendships_create', true, API_METHOD_POST);
+
+/**
+ * Unfollow Contact
+ *
+ * @brief unfollow contact 
+ *
+ * @param string $type Known types are 'atom', 'rss', 'xml' and 'json'
+ * @return string|array
+ * @see https://developer.twitter.com/en/docs/accounts-and-users/follow-search-get-users/api-reference/post-friendships-destroy.html
+ */
 function api_friendships_destroy($type)
 {
 	$a = api_user();
