@@ -912,7 +912,7 @@ function admin_page_summary(App $a)
 	$r = q("SHOW variables LIKE 'max_allowed_packet'");
 	$max_allowed_packet = (($r) ? $r[0]['Value'] : 0);
 
-	$server_settings = ['label' => L10n::t('PHP Values'), 
+	$server_settings = ['label' => L10n::t('Server Settings'), 
 				'php' => ['upload_max_filesize' => ini_get('upload_max_filesize'), 
 						  'post_max_size' => ini_get('post_max_size'), 
 						  'memory_limit' => ini_get('memory_limit')], 
@@ -932,7 +932,7 @@ function admin_page_summary(App $a)
 		'$codename' => FRIENDICA_CODENAME,
 		'$build' => Config::get('system', 'build'),
 		'$addons' => [L10n::t('Active addons'), $a->addons],
-		'$seversettings' => $server_settings,
+		'$serversettings' => $server_settings,
 		'$showwarning' => $showwarning,
 		'$warningtext' => $warningtext
 	]);
