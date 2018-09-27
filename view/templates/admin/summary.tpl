@@ -47,7 +47,7 @@
 	<dl>
 		<dt>{{$serversettings.label}}</dt>
 		<dd>
-			<table>
+			<table id="serversettings">
 				<tbody>
 					<tr><td colspan="2"><b>PHP</b></td></tr>
 					{{foreach $serversettings.php as $k => $p}}
