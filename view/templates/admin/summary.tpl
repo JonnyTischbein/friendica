@@ -44,5 +44,22 @@
 		<dd> {{$platform}} '{{$codename}}' {{$version.1}} - {{$build}}</dt>
 	</dl>
 
+	<dl>
+		<dt>{{$serversettings.label}}</dt>
+		<dd>
+			<table class="table">
+				<tbody>
+					<tr class="info"><td colspan="2">PHP</td></tr>
+					{{foreach $serversettings.php as $k => $p}}
+						<tr><td>{{$k}}</td><td>{{$p}}</td></tr>
+					{{/foreach}}
+					<tr class="info"><td colspan="2">MySQL / MariaDB</td></tr>
+					{{foreach $serversettings.mysql as $k => $p}}
+						<tr><td>{{$k}}</td><td>{{$p}}</td></tr>
+					{{/foreach}}
+				</tbody>
+			</table>
+		</dd>
+	</dl>
 
 </div>
