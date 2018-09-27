@@ -932,7 +932,7 @@ function admin_page_summary(App $a)
 		'$codename' => FRIENDICA_CODENAME,
 		'$build' => Config::get('system', 'build'),
 		'$addons' => [L10n::t('Active addons'), $a->addons],
-		'$seversetting' => $server_settings,
+		'$seversettings' => $server_settings,
 		'$showwarning' => $showwarning,
 		'$warningtext' => $warningtext
 	]);
