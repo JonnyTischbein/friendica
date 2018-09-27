@@ -47,13 +47,13 @@
 	<dl>
 		<dt>{{$serversettings.label}}</dt>
 		<dd>
-			<table class="table">
+			<table>
 				<tbody>
-					<tr class="info"><td colspan="2">PHP</td></tr>
+					<tr><td colspan="2"><b>PHP</b></td></tr>
 					{{foreach $serversettings.php as $k => $p}}
 						<tr><td>{{$k}}</td><td>{{$p}}</td></tr>
 					{{/foreach}}
-					<tr class="info"><td colspan="2">MySQL / MariaDB</td></tr>
+					<tr><td colspan="2"><b>MySQL / MariaDB</b></td></tr>
 					{{foreach $serversettings.mysql as $k => $p}}
 						<tr><td>{{$k}}</td><td>{{$p}}</td></tr>
 					{{/foreach}}
