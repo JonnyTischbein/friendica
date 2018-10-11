@@ -10,8 +10,7 @@ use Friendica\Core\Protocol;
 use Friendica\Database\DBA;
 use Friendica\Model\Contact;
 use Friendica\Model\Profile;
-
-require_once 'mod/contacts.php';
+use Friendica\Module\Contacts;
 
 function crepair_init(App $a)
 {
@@ -135,7 +134,7 @@ function crepair_content(App $a)
 
 	$update_profile = in_array($contact['network'], [Protocol::DFRN, Protocol::DIASPORA, Protocol::OSTATUS]);
 
-	$tab_str = contacts_tab($a, $contact, 5);
+	$tab_str = Contacts::contacts_tab($a, $contact, 5);
 
 	$tpl = get_markup_template('crepair.tpl');
 	$o = replace_macros($tpl, [

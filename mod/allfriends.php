@@ -12,9 +12,9 @@ use Friendica\Model\Contact;
 use Friendica\Model\GContact;
 use Friendica\Model\Profile;
 use Friendica\Util\Proxy as ProxyUtils;
+use Friendica\Module\Contacts;
 
 require_once 'include/dba.php';
-require_once 'mod/contacts.php';
 
 function allfriends_content(App $a)
 {
@@ -46,7 +46,7 @@ function allfriends_content(App $a)
 
 	$total = GContact::countAllFriends(local_user(), $cid);
 
-	$a->setPagerTotal($total);
+	$a->set_pager_total($total);
 
 	$r = GContact::allFriends(local_user(), $cid, $a->pager['start'], $a->pager['itemspage']);
 	if (!DBA::isResult($r)) {
@@ -96,7 +96,7 @@ function allfriends_content(App $a)
 		$entries[] = $entry;
 	}
 
-	$tab_str = contacts_tab($a, $contact, 4);
+	$tab_str = Contacts::contacts_tab($a, $contact, 4);
 
 	$tpl = get_markup_template('viewcontact_template.tpl');
 
