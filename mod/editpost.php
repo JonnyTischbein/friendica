@@ -33,6 +33,9 @@ function editpost_content(App $a)
 		$return_url = $_SESSION['return_url'];
 	}
 
+	// Prevent a wrong return (caused by Ajax Call)
+	$return_url = str_replace("update_", "", $return_url);
+
 	$fields = ['allow_cid', 'allow_gid', 'deny_cid', 'deny_gid',
 		'type', 'body', 'title', 'file', 'wall', 'post-type'];
 
